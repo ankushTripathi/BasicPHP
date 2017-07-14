@@ -1,0 +1,22 @@
+{
+        "app" : {
+                "displayErrorDetails" : false,
+				"url" : "https://example.com",
+				"hash" : {
+					"algo" : "PASSWORD_BCRYPT",
+					"cost" : 11
+				}
+			},
+
+		"db"   : {
+				"driver" : "",
+				"host" : "",
+				"dbname" : "db",
+				"user" : "",
+				"pass" : "",
+				"charset" : "utf8",
+				"collation" : "utf8_unicode_ci",
+				"prefix" : ""
+				}
+
+}

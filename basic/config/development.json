@@ -1,0 +1,22 @@
+{
+"app" : {
+                "displayErrorDetails" : true,
+				"url" : "http://localhost",
+				"hash" : {
+					"algo" : "PASSWORD_BCRYPT",
+					"cost" : 10
+				}
+		},
+
+		"db"   : {
+				"driver" : "mysql",
+				"host" : "127.0.0.1",
+				"dbname" : "webapp",
+				"user" : "admin",
+				"pass" : "admin",
+				"charset" : "utf8",
+				"collation" : "utf8_unicode_ci",
+				"prefix" : ""
+				}
+
+}
