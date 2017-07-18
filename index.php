@@ -16,5 +16,12 @@ $container['db'] = function($container){
         $db_config['pass']
     );
 };
+$app->get('/',function(){
+    echo 'Home';
+});
 
-var_dump($container->db);
+$app->get('/users',function(){
+    echo 'Users';
+});
+
+$app->run();
