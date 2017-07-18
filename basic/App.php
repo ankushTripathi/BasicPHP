@@ -44,6 +44,26 @@ class App{
         $this->router->addRoute($uri,$handler);
     }
 
+    public function post($uri,$handler){
+        $this->router->addRoute($uri,$handler,'POST');
+    }
+
+    public function put($uri,$handler){
+        $this->router->addRoute($uri,$handler,'PUT');
+    }
+    
+    public function delete($uri,$handler){
+        $this->router->addRoute($uri,$handler,'DELETE');
+    }
+
+    public function route($uri,Controller $class){
+        $object = new $class();
+        $this->get($uri,$object->show);
+        $this->post($uri,$object->insert);
+        $this->put($uri,$object->update);
+        $this->delete($uri,$object->remove);
+    }
+
     public function run(){
         $this->router->setPath($_SERVER['PATH_INFO'] ?? '/');
         $response = $this->router->getResponse();

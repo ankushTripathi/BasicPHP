@@ -20,8 +20,6 @@ $app->get('/',function(){
     echo 'Home';
 });
 
-$app->get('/users',function(){
-    echo 'Users';
-});
+$app->route('/users',Users);
 
 $app->run();
