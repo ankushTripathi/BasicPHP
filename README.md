@@ -1,2 +1,2 @@
 # BasicPHP
-a micro php framework inspired by Slim php
+a micro php framework inspired by Slim and laravel
