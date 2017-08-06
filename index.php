@@ -1,6 +1,8 @@
 <?php
 
 require 'vendor/autoload.php';
+use Basic\TestController;
+use Basic\UserController;
 
 $app = new Basic\App();
 
@@ -16,10 +18,13 @@ $container['db'] = function($container){
         $db_config['pass']
     );
 };
+
 $app->get('/',function(){
     echo 'Home';
 });
 
-$app->route('/users',Users);
+$app->get('/test',[TestController::class,'index']);
+
+$app->route('/users',UserController::class);
 
 $app->run();

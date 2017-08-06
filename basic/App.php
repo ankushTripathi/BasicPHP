@@ -41,27 +41,59 @@ class App{
     }
 
     public function get($uri,$handler){
+        if(is_array($handler)){
+            if(count($handler) === 2){
+                $class = $handler[0];
+                $method_name = $handler[1];
+                $obj = new $class();
+                $handler = $obj->{$method_name}();
+            }
+        }
         $this->router->addRoute($uri,$handler);
     }
 
     public function post($uri,$handler){
+        if(is_array($handler)){
+            if(count($handler) === 2){
+                $class = $handler[0];
+                $method_name = $handler[1];
+                $obj = new $class();
+                $handler = $obj->{$method_name}();
+            }
+        }
         $this->router->addRoute($uri,$handler,'POST');
     }
 
     public function put($uri,$handler){
+        if(is_array($handler)){
+            if(count($handler) === 2){
+                $class = $handler[0];
+                $method_name = $handler[1];
+                $obj = new $class();
+                $handler = $obj->{$method_name}();
+            }
+        }
         $this->router->addRoute($uri,$handler,'PUT');
     }
     
     public function delete($uri,$handler){
+        if(is_array($handler)){
+            if(count($handler) === 2){
+                $class = $handler[0];
+                $method_name = $handler[1];
+                $obj = new $class();
+                $handler = $obj->{$method_name}();
+            }
+        }
         $this->router->addRoute($uri,$handler,'DELETE');
     }
 
-    public function route($uri,Controller $class){
+    public function route($uri,$class){
         $object = new $class();
-        $this->get($uri,$object->show);
-        $this->post($uri,$object->insert);
-        $this->put($uri,$object->update);
-        $this->delete($uri,$object->remove);
+        $this->get($uri,$object->show());
+        $this->post($uri,$object->store());
+        $this->put($uri,$object->update());
+        $this->delete($uri,$object->remove());
     }
 
     public function run(){
