@@ -6,11 +6,11 @@ class Router{
     
     protected $routes = [];
     protected $path;
-    protected $methods = [];
 
     public function addRoute($uri,$handler,$method = 'GET'){
-        $this->routes[$uri] = $handler;
-        $this->methods[$uri] = $method;
+        if(empty($this->routes[$uri]))
+            $this->routes[$uri] = [];
+        $this->routes[$uri][$method] = $handler;
     }
 
     public function setPath($uri = '/'){
@@ -18,8 +18,8 @@ class Router{
     }
 
     public function getResponse(){
-        if($_SERVER['REQUEST_METHOD'] === $this->methods[$this->path]){
-            return $this->routes[$this->path];
+        if(in_array($_SERVER['REQUEST_METHOD'],array_keys($this->routes[$this->path]))){
+            return $this->routes[$this->path][$_SERVER['REQUEST_METHOD']];
         }else{
             die('method not allowed');
         }

@@ -43,57 +43,79 @@ class App{
     public function get($uri,$handler){
         if(is_array($handler)){
             if(count($handler) === 2){
-                $class = $handler[0];
-                $method_name = $handler[1];
-                $obj = new $class();
-                $handler = $obj->{$method_name}();
+                if($this->container->has($handler[0])){
+                    $tmp = function() use($handler){
+                        $obj = $this->container[$handler[0]];
+                        return $obj->{$handler[1]}();
+                    };
+                    $handler = $tmp;
+                }
             }
         }
         $this->router->addRoute($uri,$handler);
     }
 
     public function post($uri,$handler){
-        if(is_array($handler)){
+                if(is_array($handler)){
             if(count($handler) === 2){
-                $class = $handler[0];
-                $method_name = $handler[1];
-                $obj = new $class();
-                $handler = $obj->{$method_name}();
+                if($this->container->has($handler[0])){
+                    $tmp = function() use($handler){
+                        $obj = $this->container[$handler[0]];
+                        return $obj->{$handler[1]}();
+                    };
+                    $handler = $tmp;
+                }
             }
         }
         $this->router->addRoute($uri,$handler,'POST');
     }
 
     public function put($uri,$handler){
-        if(is_array($handler)){
+                if(is_array($handler)){
             if(count($handler) === 2){
-                $class = $handler[0];
-                $method_name = $handler[1];
-                $obj = new $class();
-                $handler = $obj->{$method_name}();
+                if($this->container->has($handler[0])){
+                    $tmp = function() use($handler){
+                        $obj = $this->container[$handler[0]];
+                        return $obj->{$handler[1]}();
+                    };
+                    $handler = $tmp;
+                }
             }
         }
         $this->router->addRoute($uri,$handler,'PUT');
     }
     
     public function delete($uri,$handler){
-        if(is_array($handler)){
+                if(is_array($handler)){
             if(count($handler) === 2){
-                $class = $handler[0];
-                $method_name = $handler[1];
-                $obj = new $class();
-                $handler = $obj->{$method_name}();
+                if($this->container->has($handler[0])){
+                    $tmp = function() use($handler){
+                        $obj = $this->container[$handler[0]];
+                        return $obj->{$handler[1]}();
+                    };
+                    $handler = $tmp;
+                }
             }
         }
         $this->router->addRoute($uri,$handler,'DELETE');
     }
 
     public function route($uri,$class){
-        $object = new $class();
-        $this->get($uri,$object->show());
-        $this->post($uri,$object->store());
-        $this->put($uri,$object->update());
-        $this->delete($uri,$object->remove());
+        if($this->container->has($class)){
+            $object = $this->container[$class];
+            $this->get($uri,function()use($object){
+                return $object->show();
+            });
+            $this->post($uri,function()use($object){
+                return $object->store();
+            });
+            $this->put($uri,function()use($object){
+                return $object->update();
+            });
+            $this->delete($uri,function()use($object){
+                return $object->remove();
+            });
+        }
     }
 
     public function run(){
