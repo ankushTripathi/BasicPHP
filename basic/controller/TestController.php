@@ -2,7 +2,7 @@
 
 namespace Basic\Controller;
 
-class TestController{
+class TestController extends Controller{
     
     public function index(){
         echo "fuck off";

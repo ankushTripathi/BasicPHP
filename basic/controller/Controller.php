@@ -2,12 +2,14 @@
 
 namespace Basic\Controller;
 
+use Basic\App;
 
 abstract class Controller{
 
-    abstract public function show();
-    abstract public function store();
-    abstract public function remove();
-    abstract public function update();
+    protected $container;
+
+    public function __construct(){
+        $this->container = App::getInstance()->getContainer();
+    }
     
 }

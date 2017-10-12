@@ -7,6 +7,7 @@ use Basic\Exceptions\MethodNotAllowed;
 
 class App{
 
+    protected static $instance = NULL;
     protected $container;
     protected $router;
     public function __construct(){
@@ -19,6 +20,13 @@ class App{
             }
         ]);
         $this->router = $this->container->router;
+    }
+
+    public static function getInstance(){
+        if(!isset(self::$instance))
+            self::$instance = new self;
+        
+        return self::$instance;
     }
 
     public function getContainer(){
