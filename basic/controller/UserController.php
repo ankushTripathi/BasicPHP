@@ -4,19 +4,23 @@ namespace Basic\Controller;
 
 class UserController extends Controller{
 
-    public function store(){
+    public function store($response){
 
     }
 
-    public function show(){
-        echo "here mofo";
+    public function show($response){
+        return $response->withJson([
+            'id' => 1,
+            'name' => 'ankush',
+            'active' => true
+        ]);
     }
 
-    public function update(){
+    public function update($response){
 
     }
     
-    public function remove(){
+    public function remove($response){
 
     }
 }

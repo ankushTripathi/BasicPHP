@@ -17,6 +17,9 @@ class App{
             },
             'controller' => function(){
                 return new Controller\Controller;
+            },
+            'response' => function(){
+                return new Response;
             }
         ]);
         $this->router = $this->container->router;
@@ -72,18 +75,18 @@ class App{
 
     public function route($uri,$class){
             $object = new $class();
-            
-                $this->get($uri,function()use($object){
-                return $object->show();
+            $response = $this->container['response'];
+                $this->get($uri,function()use($object,$response){
+                return $object->show($response);
                 });
-                $this->post($uri,function()use($object){
-                    return $object->store();
+                $this->post($uri,function()use($object,$response){
+                    return $object->store($response);
                 });
-                $this->put($uri,function()use($object){
-                    return $object->update();
+                $this->put($uri,function()use($object,$response){
+                    return $object->update($response);
                 });
-                $this->delete($uri,function()use($object){
-                    return $object->remove();
+                $this->delete($uri,function()use($object,$response){
+                    return $object->remove($response);
                 });
     }
 
@@ -92,19 +95,46 @@ class App{
         try{
             $response = $this->router->getResponse();
         }catch(RouteNotFound $e){
-            die('exception caught');
+            $this->respond($this->container['response']->setBody('Route Not Found!')->withStatus(404));
+            return;
+        }catch(MethodNotAllowed $e){
+            $this->respond($this->container['response']->setBody('Method Not Allowed!')->withStatus(405));
+            return ;
         }
-        $this->process($response);
+
+        $this->respond($this->process($response));
+
     }
 
     protected function process($callback){
+        $response = $this->container->response;
         if(is_array($callback)){
             if(!is_object($callback[0])){
                 $callback[0] = new $callback[0];
             }
-            return call_user_func($callback);
+            return call_user_func($callback,$response);
         }
-        return $callback();
+        return $callback($response);
+    }
+
+    public function respond($response){
+        if(!$response instanceof Response){
+            echo $response;
+            return;
+        }
+
+        header(sprintf(
+            'HTTP/%s %s %s',
+            1.1,
+            $response->getStatusCode(),
+            ''
+        ));
+
+        foreach($response->getHeaders() as $header){
+            header($header[0].': '.$header[1]);
+        }
+
+        echo $response->getBody();
     }
 
     public function break($msg){

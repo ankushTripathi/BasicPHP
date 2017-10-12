@@ -17,8 +17,8 @@ $container['db'] = function($container){
     );
 };
 
-$app->get('/',function(){
-    echo 'Home';
+$app->get('/',function($response){
+    return $response->setBody('Home')->withStatus(200);
 });
 
 $app->get('/test',[Basic\Controller\TestController::class,'index']);
