@@ -21,7 +21,7 @@ $app->get('/',function(){
     echo 'Home';
 });
 
-$app->get('/test',['Basic\\Controller\\TestController','index']);
+$app->get('/test',[Basic\Controller\TestController::class,'index']);
 
 $app->route('/users','Basic\\Controller\\UserController');
 

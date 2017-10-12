@@ -2,6 +2,9 @@
 
 namespace Basic;
 
+use Basic\Exceptions\RouteNotFound;
+use Basic\Exceptions\MethodNotAllowed;
+
 class App{
 
     protected $container;
@@ -44,50 +47,18 @@ class App{
     }
 
     public function get($uri,$handler){
-        if(is_array($handler)){
-            if(count($handler) === 2){
-                    $handler = function() use($handler){
-                        $obj = new $handler[0];
-                        return $obj->{$handler[1]}();
-                    };
-            }
-        }
         $this->router->addRoute($uri, $handler);
     }
 
     public function post($uri,$handler){
-        if(is_array($handler)){
-            if(count($handler) === 2){
-                    $handler = function() use($handler){
-                        $obj = new $handler[0];
-                        return $obj->{$handler[1]}();
-                    };
-            }
-        }
         $this->router->addRoute($uri,$handler,'POST');
     }
 
     public function put($uri,$handler){
-        if(is_array($handler)){
-            if(count($handler) === 2){
-                    $handler = function() use($handler){
-                        $obj = new $handler[0];
-                        return $obj->{$handler[1]}();
-                    };
-            }
-        }
         $this->router->addRoute($uri,$handler,'PUT');
     }
     
     public function delete($uri,$handler){
-        if(is_array($handler)){
-            if(count($handler) === 2){
-                    $handler = function() use($handler){
-                        $obj = new $handler[0];
-                        return $obj->{$handler[1]}();
-                    };
-            }
-        }
         $this->router->addRoute($uri,$handler,'DELETE');
     }
 
@@ -110,11 +81,21 @@ class App{
 
     public function run(){
         $this->router->setPath($_SERVER['PATH_INFO'] ?? '/');
-        $response = $this->router->getResponse();
+        try{
+            $response = $this->router->getResponse();
+        }catch(RouteNotFound $e){
+            die('exception caught');
+        }
         $this->process($response);
     }
 
     protected function process($callback){
+        if(is_array($callback)){
+            if(!is_object($callback[0])){
+                $callback[0] = new $callback[0];
+            }
+            return call_user_func($callback);
+        }
         return $callback();
     }
 
