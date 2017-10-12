@@ -1,8 +1,6 @@
 <?php
 
 require 'vendor/autoload.php';
-use Basic\TestController;
-use Basic\UserController;
 
 $app = new Basic\App();
 
@@ -19,21 +17,12 @@ $container['db'] = function($container){
     );
 };
 
-$container['TestController'] = function(){
-    return new TestController();
-};
-
-
-$container['UserController'] = function(){
-    return new UserController();
-};
-
 $app->get('/',function(){
     echo 'Home';
 });
 
- $app->get('/test',['TestController','index']);
+$app->get('/test',['Basic\\Controller\\TestController','index']);
 
-$app->route('/users','UserController');
+$app->route('/users','Basic\\Controller\\UserController');
 
 $app->run();
