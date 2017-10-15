@@ -3,6 +3,6 @@
 namespace Basic\Exceptions;
 
 
-class MethodNotFound extends \Exception{
+class MethodNotAllowed extends \Exception{
     //
 }
