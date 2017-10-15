@@ -10,6 +10,8 @@ class App{
     protected static $instance = NULL;
     protected $container;
     protected $router;
+    protected $app_path;
+
     public function __construct(){
         $this->container = new Container([
             'router' => function(){
@@ -36,18 +38,23 @@ class App{
         return $this->container;
     }
 
+
+    public function setPathToApp($path){
+        $this->app_path = $path;
+    }
+
     public function configure($mode){
         switch($mode){
             case 'development' : $this->container['config'] =  function(){
                                     return json_decode(
-                                        file_get_contents('config/development.json', FILE_USE_INCLUDE_PATH),
+                                        file_get_contents($this->app_path.'/config/development.json', FILE_USE_INCLUDE_PATH),
                                         true
                                         );
                                 };
                                 break;
             case 'production'  :  $this->container['config'] =  function(){
                                     return json_decode(
-                                        file_get_contents('config/production.json', FILE_USE_INCLUDE_PATH),
+                                        file_get_contents($this->app_path.'/config/production.json', FILE_USE_INCLUDE_PATH),
                                         true
                                         );
                                 };
