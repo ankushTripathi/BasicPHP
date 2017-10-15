@@ -6,8 +6,6 @@ class User extends Model{
 
     protected $table = 'users';
 
-    protected static $instance = NULL;
-
     protected $fields = [
         'username' => 'varchar(255)',
         'email' => 'varchar(255)',

@@ -3,6 +3,7 @@
 namespace Basic\Models;
 
 use Basic\App;
+use PDO;
 
 class Model{
 
